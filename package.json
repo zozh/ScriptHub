@@ -1,0 +1,15 @@
+{
+  "name": "scriptHub",
+  "version": "0.1.0",
+  "description": "使用 Electron 实现 python GUI。",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "zouzhao",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^26.2.2",
+    "nodemon": "^3.0.1"
+  }
+}
