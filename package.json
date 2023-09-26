@@ -4,7 +4,7 @@
   "description": "使用 Electron 实现 python GUI。",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron . "
   },
   "author": "zouzhao",
   "license": "ISC",

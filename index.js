@@ -1,14 +1,28 @@
-//引入两个模块：app 和 BrowserWindow
-
-//app 模块，控制整个应用程序的事件生命周期。
-//BrowserWindow 模块，它创建和管理程序的窗口。
-
+/*
+ * @Author: zouzhao
+ * @Date: 2023-09-26 11:16:41
+ * @LastEditors: zouzhao
+ * @LastEditTime: 2023-09-26 11:16:57
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by zouzhao, All Rights Reserved. 
+ */
 const { app, BrowserWindow } = require("electron")
+const path = require("path")
 
-//在 Electron 中，只有在 app 模块的 ready 事件被激发后才能创建浏览器窗口
-app.on("ready", () => {
-  //创建一个窗口
-  const mainWindow = new BrowserWindow()
-  //窗口加载html文件
-  mainWindow.loadFile("src\\index.html")
+function createWindow () {
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+  })
+
+  mainWindow.loadFile(path.join(__dirname, "renderer","dist\\index.html"))
+}
+
+app.whenReady().then(() => {
+  createWindow()
+
+  app.on("activate", function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
 })
