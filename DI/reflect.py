@@ -6,18 +6,22 @@
 @Version :   1.0
 @Contact :   wszwc3721@163.com
 @License :   Copyright (c) 2023 by zouzhao, All Rights Reserved.
-@Description    :  反射 
+@Description    :  反射
 """
 
 from importlib import import_module
 from typing import NoReturn
 
 
+class ClassInfoError(ValueError):
+    """类信息错误"""
+
+
 class Reflect:
     """现在实现了对模块的反射，对类的反射未实现"""
 
     def __init__(self, module_name: str) -> NoReturn:
-        self.MODULE_OBJ = import_module(module_name)
+        self.module_obj = import_module(module_name)
         self._get_all_variable_name()
         self._get_all_function_name()
 
@@ -27,7 +31,7 @@ class Reflect:
         Returns:
             NoReturn
         """
-        variables = dir(self.MODULE_OBJ)
+        variables = dir(self.module_obj)
         constant_variables = []
         private_variables = []
         normal_variables = []
@@ -47,7 +51,7 @@ class Reflect:
         Returns:
             NoReturn
         """
-        module_obj = self.MODULE_OBJ
+        module_obj = self.module_obj
         functions = dir(module_obj)
         private_functions = []
         normal_functions = []
@@ -69,14 +73,14 @@ class Reflect:
             new_value (object): 新的值
 
         Raises:
-            ValueError: 变量不存在或没有权限访问抛出
+            ClassInfoError: 变量不存在或没有权限访问抛出
 
         Returns:
             NoReturn
         """
         if variable_name not in self._normal_variables:
-            raise ValueError(f"{variable_name} 变量不存在或没有权限访问")
-        setattr(self.MODULE_OBJ, variable_name, new_value)
+            raise ClassInfoError(f"{variable_name} 变量不存在或没有权限访问")
+        setattr(self.module_obj, variable_name, new_value)
 
     def calling_method(self, method_name: str, *args, **kwargs) -> NoReturn:
         """根据名字调用模块对应方法
@@ -85,12 +89,12 @@ class Reflect:
             method_name (str): 方法名字
 
         Raises:
-            ValueError: 方法不存在或没有权限访问
+            ClassInfoError: 方法不存在或没有权限访问
 
         Returns:
             NoReturn
         """
         if method_name not in self._normal_functions:
-            raise ValueError(f"{method_name} 方法不存在或没有权限访问")
-        method = getattr(self.MODULE_OBJ, method_name)
+            raise ClassInfoError(f"{method_name} 方法不存在或没有权限访问")
+        method = getattr(self.module_obj, method_name)
         method(*args, **kwargs)
